@@ -26,12 +26,14 @@ class Node(object):
     def set_next(self, new_next):
         """Set the node's next reference to provided node."""
         self.next_node = new_next
-        new_next.prev_node = self
+        if new_next:
+            new_next.prev_node = self
 
     def set_prev(self, new_prev):
         """Set the node's previous reference to provide node."""
         self.prev_node = new_prev
-        new_prev.next_node = self
+        if new_prev:
+            new_prev.next_node = self
 
 
 class DblLinkedList(object):
@@ -44,7 +46,7 @@ class DblLinkedList(object):
         self.head = None
         self.tail = None
 
-        for val in seq:
+        for val in seq or []:
             cur_node = Node(val, prev_node=prev_node)
             if prev_node:
                 prev_node.next_node = cur_node
@@ -58,29 +60,43 @@ class DblLinkedList(object):
         """Add node to linked list and update next and previous references."""
         new_node = Node(val)
         new_node.set_next(self.head)
+        if not self.tail:
+            self.tail = new_node
         self.head = new_node
 
     def append(self, val):
         """Add node to tail of linked list and update previous reference."""
         new_node = Node(val)
         new_node.set_prev(self.tail)
+        if not self.head:
+            self.head = new_node
         self.tail = new_node
 
     def pop(self):
         """Remove the first node from the head and return its value."""
-        popped_node = self.head
-        self.head = self.head.next_node
-        if self.head:
-            self.head.prev_node = None
-        return popped_node.val
+        if not self.head:
+            raise IndexError("Cannot pop from empty list.")
+        else:
+            popped_node = self.head
+            self.head = self.head.next_node
+            if self.head:
+                self.head.prev_node = None
+            else:
+                self.tail = None
+            return popped_node.val
 
     def shift(self):
         """Remove node from tail and return its value."""
-        shifted_node = self.tail
-        self.tail = self.tail.prev_node
-        if self.tail:
-            self.tail.next_node = None
-        return shifted_node.val
+        if not self.tail:
+            raise IndexError("Cannot shift from empty list.")
+        else:
+            shifted_node = self.tail
+            self.tail = self.tail.prev_node
+            if self.tail:
+                self.tail.next_node = None
+            else:
+                self.head = None
+            return shifted_node.val
 
     def remove(self, val):
         """Search list for value and remove first instance."""
