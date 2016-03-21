@@ -8,6 +8,12 @@ previous item in the list from any given item, or where a user may need to
 iterate through the list in reverse order. Otherwise, use the slightly faster
 Singly Linked List.
 
+proper_parens:
+    This function takes a unicode string (text) as input and returns one of three possible values:
+      - Return 1 if the string is “open” (there are open parens that are not closed)
+      - Return 0 if the string is “balanced” (there are an equal number of open and closed parentheses in the string)
+      - Return -1 if the string is “broken” (a closing parens has not been proceeded by one that opens)
+
 Singly Linked List:
     Module linked_list.py contains a recursively generated linked list class
     (Linked_List).
