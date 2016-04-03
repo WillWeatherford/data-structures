@@ -15,11 +15,9 @@ class DGraph(object):
 
     def edges(self):
         """Return a list of edges that originate from each node."""
-        edge_list = []
-        for key, val in self._d_graph.items():
-            for node in val:
-                edge_list.append('>'.join((key, node)))
-        return edge_list
+        return ['>'.join((key, node))
+                for key, val in self._d_graph.items()
+                for node in val]
 
     def add_node(self, node):
         """Add specified node to graph and intialize an empty set of edges."""

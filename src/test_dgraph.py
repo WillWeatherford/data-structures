@@ -4,6 +4,12 @@ import pytest
 
 
 @pytest.fixture(scope='function')
+def empty_instance():
+    from d_graph import DGraph
+    return DGraph()
+
+
+@pytest.fixture(scope='function')
 def instance():
     from d_graph import DGraph
     test_graph = DGraph()
@@ -16,6 +22,14 @@ def instance():
     test_graph.add_edge('A', 'C')
     test_graph.add_edge('B', 'C')
     return test_graph
+
+
+def test_nodes_empty(empty_instance):
+    assert empty_instance.nodes() == []
+
+
+def test_nodes_edges(empty_instance):
+    assert empty_instance.edges() == []
 
 
 def test_nodes(instance):
@@ -55,6 +69,7 @@ def test_del_edge(instance):
     instance.del_edge('A', 'C')
     expected = ['A>B', 'A>D', 'B>C']
     assert sorted(instance.edges()) == sorted(expected)
+    assert all([node in instance.nodes() for node in ('A', 'C')])
 
 
 def test_del_edge_error(instance):
